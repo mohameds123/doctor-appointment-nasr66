@@ -5,19 +5,23 @@ import 'package:flutter/material.dart';
 class AppButton extends StatelessWidget {
   double width;
   String txt;
+  Function onPress;
 
-  AppButton({super.key, required this.width, required this.txt});
+  AppButton({super.key, required this.width, required this.txt, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      width: width,
-      decoration: BoxDecoration(
-        color: ColorsManager.primary,
-        borderRadius: BorderRadius.circular(8),
+    return InkWell(
+      onTap: onPress(),
+      child: Container(
+        height: 48,
+        width: width,
+        decoration: BoxDecoration(
+          color: ColorsManager.primary,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(txt, style: TxtStyle.fontSize14W600White),
       ),
-      child: Text(txt, style: TxtStyle.fontSize14W600White),
     );
   }
 }

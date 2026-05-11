@@ -7,14 +7,18 @@ class Txtfield extends StatelessWidget {
   final String hintText;
   final Widget? prefixIcon;
   TextEditingController controller;
+  bool secureTxt;
 
-   Txtfield({super.key, required this.hintText,  this.prefixIcon,required this.controller});
+   Txtfield({super.key, required this.hintText,  this.prefixIcon,required this.controller,required this.secureTxt});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: secureTxt,
+
       controller: controller,
       decoration: InputDecoration(
+
         hintText: hintText,
         hintStyle: TxtStyle.size12w400blackhint,
         filled: true,

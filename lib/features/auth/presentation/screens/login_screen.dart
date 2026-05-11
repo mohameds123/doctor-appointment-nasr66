@@ -10,12 +10,19 @@ import '../../../../core/theming/txt_style.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_txt_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  LoginScreen({super.key});
 
-   LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passController = TextEditingController();
 
+  bool isSecure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +32,18 @@ class LoginScreen extends StatelessWidget {
         backgroundColor: ColorsManager.backgroundapp,
         body: BlocConsumer<AuthCubit, AuthStates>(
           listener: (context, state) {
-            if (state is AuthSuccessState){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.responseModel.message)));
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-            }else if (state is AuthErrorState){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.em)));
-
+            if (state is AuthSuccessState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.responseModel.message)),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            } else if (state is AuthErrorState) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.em)));
             }
           },
           builder: (context, state) {
@@ -68,8 +81,10 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(height: 30),
 
                             // TEXT
-                            Text("Welcome back",
-                                style: TxtStyle.size24w400black),
+                            Text(
+                              "Welcome back",
+                              style: TxtStyle.size24w400black,
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               "Please enter your details to sign in.",
@@ -87,28 +102,56 @@ class LoginScreen extends StatelessWidget {
                                     style: TxtStyle.size12w400black,
                                   ),
                                 ),
-                                Txtfield(hintText: "name@example.com",controller: emailController,),
+                                Txtfield(
+                                  secureTxt: false,
+                                  hintText: "name@example.com",
+                                  controller: emailController,
+                                ),
                                 const SizedBox(height: 16),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                      "Password",
-                                      style: TxtStyle.size12w400black),
+                                    "Password",
+                                    style: TxtStyle.size12w400black,
+                                  ),
                                 ),
-                                Txtfield(hintText: "password",controller: passController,),
+                                Txtfield(
+                                  hintText: "password",
+                                  controller: passController,
+                                  prefixIcon: IconButton(
+                                    onPressed: (){
+                                      setState(() {
+                                        isSecure = !isSecure;
+                                        print("======= isSecure value = $isSecure");
+
+                                      });
+                                    },
+                                    icon: Icon( isSecure
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,)
+
+                                  ),
+                                  secureTxt: isSecure,
+                                ),
                               ],
                             ),
                             const SizedBox(height: 30),
 
                             // Button
-                            AppButton(width: double.infinity,
-                              txt: (state is AuthLoadingState) ? "Loading..." : "Log In",
+                            AppButton(
+                              width: double.infinity,
+                              txt: (state is AuthLoadingState)
+                                  ? "Loading..."
+                                  : "Log In",
                               onPress: () {
-                              context.read<AuthCubit>().login(RequestBody(email: emailController.text, password: passController.text));
-
-
-
-                              },),
+                                context.read<AuthCubit>().login(
+                                  RequestBody(
+                                    email: emailController.text,
+                                    password: passController.text,
+                                  ),
+                                );
+                              },
+                            ),
                             const SizedBox(height: 15),
 
                             // Sign up Row
@@ -123,8 +166,10 @@ class LoginScreen extends StatelessWidget {
                                     //       builder: (context) => const Signup()),
                                     // );
                                   },
-                                  child: Text("Sign up",
-                                      style: TxtStyle.size14w800primary),
+                                  child: Text(
+                                    "Sign up",
+                                    style: TxtStyle.size14w800primary,
+                                  ),
                                 ),
                               ],
                             ),

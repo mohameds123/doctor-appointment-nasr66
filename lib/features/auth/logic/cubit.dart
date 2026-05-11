@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:docdocnasr66/core/const/api_const.dart';
+import 'package:docdocnasr66/core/service/cash_helper.dart';
 import 'package:docdocnasr66/features/auth/data/request_body.dart';
 import 'package:docdocnasr66/features/auth/logic/state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ class AuthCubit extends Cubit <AuthStates> {
   AuthCubit () : super (AuthInitialState());
   
   Dio dio = Dio() ;
+
   
   Future login (RequestBody body) async {
     emit(AuthLoadingState());
@@ -18,6 +20,7 @@ class AuthCubit extends Cubit <AuthStates> {
 
       if (response.statusCode == 200) {
         final result = ResponseModel.fromJson(response.data);
+        TokenStorage.saveToken(response.data["data"]["token"]);
         emit(AuthSuccessState(responseModel: result));
       }
 

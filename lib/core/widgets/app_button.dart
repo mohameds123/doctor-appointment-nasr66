@@ -12,7 +12,9 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPress(),
+      onTap: (){
+        onPress();
+      },
       child: Container(
         height: 48,
         width: width,
@@ -20,7 +22,7 @@ class AppButton extends StatelessWidget {
           color: ColorsManager.primary,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(txt, style: TxtStyle.fontSize14W600White),
+        child: Center(child: Text(txt, style: TxtStyle.fontSize14W600White)),
       ),
     );
   }

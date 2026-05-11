@@ -11,19 +11,18 @@ class AuthCubit extends Cubit <AuthStates> {
   
   Dio dio = Dio() ;
   
-  Future <ResponseModel?> login (RequestBody body) async {
+  Future login (RequestBody body) async {
     emit(AuthLoadingState());
     try {
      final response = await dio.post(ApiConst.login,data: body.toJson());
 
       if (response.statusCode == 200) {
         final result = ResponseModel.fromJson(response.data);
-        emit(AuthLoadedState());
-        return result;
+        emit(AuthSuccessState(responseModel: result));
       }
 
     }catch (e){
-      emit(AuthErrorState());
+      emit(AuthErrorState(em: e.toString()));
     }
 
   } 

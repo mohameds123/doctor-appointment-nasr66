@@ -6,12 +6,14 @@ import '../theming/txt_style.dart';
 class Txtfield extends StatelessWidget {
   final String hintText;
   final Widget? prefixIcon;
+  TextEditingController controller;
 
-  const Txtfield({super.key, required this.hintText,  this.prefixIcon});
+   Txtfield({super.key, required this.hintText,  this.prefixIcon,required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TxtStyle.size12w400blackhint,
